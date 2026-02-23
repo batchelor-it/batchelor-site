@@ -2,17 +2,35 @@
 import '../styles/global.css';
 interface Props {
   title: string;
+  description?: string;
 }
-const { title } = Astro.props;
+const { title, description = "IT leader, wildlife photographer, and occasional overthinker based in Kennesaw, GA." } = Astro.props;
+const canonical = `https://batchelor.it${Astro.url.pathname}`;
 ---
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title} — Jimmy Batchelor</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Jimmy Batchelor" />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={`${title} — Jimmy Batchelor`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Jimmy Batchelor" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter/X -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={`${title} — Jimmy Batchelor`} />
+    <meta name="twitter:description" content={description} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
