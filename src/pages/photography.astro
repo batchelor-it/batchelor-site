@@ -1,8 +1,99 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const collections = [
+  { name: 'Wildlife', slug: 'wildlife' },
+  { name: 'Luna', slug: 'luna' },
+  { name: 'Macro', slug: 'macro' },
+  { name: 'Plantlife', slug: 'plantlife' },
+  { name: 'Landscape', slug: 'landscape' },
+  { name: 'Astro', slug: 'astro' },
+  { name: 'Street', slug: 'street' },
+  { name: 'Travel', slug: 'travel' },
+];
+
+const allImages = import.meta.glob('/public/photography/**/*.{jpg,jpeg,png,webp}');
+const images = Object.keys(allImages).map((path) => path.replace('/public', ''));
 ---
 
 <Layout title="Photography">
-  <h1 class="text-4xl font-bold mb-6">Photography</h1>
-  <p class="text-[#999] text-lg">Coming soon.</p>
+
+  <section class="py-20">
+    <p class="text-[#5eead4] text-xs tracking-widest uppercase mb-4" style="font-family: 'JetBrains Mono', monospace;">Photography</p>
+    <h1 class="text-5xl font-semibold text-[#e8e8e8] mb-4 leading-tight">Photos.</h1>
+    <p class="text-[#666] text-lg mb-12">A mix of wildlife, nature, and whatever else catches my eye.</p>
+
+    <div class="flex flex-wrap gap-6 mb-16 border-b border-[#1f1f1f] pb-12">
+      {collections.map((col) => (
+        <a href={'/photography/' + col.slug}
+          class="text-xs tracking-widest uppercase text-[#666] hover:text-[#5eead4] transition-colors"
+          style="font-family: 'JetBrains Mono', monospace;">
+          {col.name}
+        </a>
+      ))}
+    </div>
+
+    <div style="column-count: 3; column-gap: 12px;">
+      {images.map((src, i) => (
+        <div
+          style="break-inside: avoid; margin-bottom: 12px; cursor: pointer;"
+          data-index={i}
+          onmouseenter="this.querySelector('img').style.outline='2px solid #5eead4'"
+          onmouseleave="this.querySelector('img').style.outline='none'"
+        >
+          <img src={src} alt="" style="width:100%; border-radius:2px;" data-index={i} />
+        </div>
+      ))}
+    </div>
+  </section>
+
 </Layout>
+
+<div id="lightbox" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:50; align-items:center; justify-content:center; padding:1rem;">
+  <button id="lb-close" style="position:absolute; top:1.5rem; right:2rem; color:#666; font-size:1.5rem; background:none; border:none; cursor:pointer;">✕</button>
+  <button id="lb-prev" style="position:absolute; left:1.5rem; color:#666; font-size:1.5rem; background:none; border:none; cursor:pointer;">←</button>
+  <img id="lightbox-img" src="" alt="" style="max-height:90vh; max-width:90vw; object-fit:contain;" />
+  <button id="lb-next" style="position:absolute; right:1.5rem; color:#666; font-size:1.5rem; background:none; border:none; cursor:pointer;">→</button>
+</div>
+
+<script define:vars={{ images }}>
+  let current = 0;
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+
+  function openLightbox(index) {
+    current = index;
+    lightboxImg.src = images[index];
+    lightbox.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  function changeImage(dir) {
+    current = (current + dir + images.length) % images.length;
+    lightboxImg.src = images[current];
+  }
+
+  document.querySelectorAll('[data-index]').forEach((el) => {
+    el.addEventListener('click', () => {
+      openLightbox(parseInt(el.dataset.index));
+    });
+  });
+
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  document.getElementById('lb-prev').addEventListener('click', () => changeImage(-1));
+  document.getElementById('lb-next').addEventListener('click', () => changeImage(1));
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') changeImage(1);
+    if (e.key === 'ArrowLeft') changeImage(-1);
+  });
+</script>

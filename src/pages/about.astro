@@ -3,6 +3,55 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="About">
-  <h1 class="text-4xl font-bold mb-6">About Me</h1>
-  <p class="text-[#999] text-lg">Coming soon.</p>
+
+  <section class="py-20 border-b border-[#1f1f1f]">
+    <p class="text-[#5eead4] text-xs tracking-widest uppercase mb-4" style="font-family: 'JetBrains Mono', monospace;">About Me</p>
+    <h1 class="text-5xl font-semibold text-[#e8e8e8] mb-10 leading-tight">A bit about me.</h1>
+
+    <div class="space-y-6 text-[#888] text-lg leading-relaxed">
+      <p>
+        I grew up in Northeast Georgia and Western North Carolina before packing up and moving to New Zealand in my early twenties - what started as an adventure turned into something much bigger. I met my wife, became a stepdad to two incredible kids, and found my footing in a career I genuinely love.
+      </p>
+      <p>
+        My path into IT wasn't exactly planned, but once I got my foot in the door I never looked back. I've spent the better part of a decade bridging the gap between technology and the people who use it - whether that's migrating thousands of devices, building technical communities, or just making sure someone's laptop works before an important meeting.
+      </p>
+      <p>
+        After years in New Zealand, we made the move back to the States and landed in Austin for a while before eventually making our way back to Georgia. Life has a funny way of coming full circle.
+      </p>
+        <p>
+        Outside of work I'm usually tinkering with something on my home lab, gaming, crouched in a field with a camera pointed at a bird that definitely already flew away, or occasionally on a trail with Luna when the weather plays nice.
+        </p>
+    </div>
+  </section>
+
+  <section class="py-16 border-b border-[#1f1f1f]">
+    <div class="grid grid-cols-3 gap-4">
+      <img src="/images/jimmy-linda.jpg" alt="Jimmy and Linda" class="w-full aspect-square object-cover rounded-sm" />
+      <img src="/images/jimmy-family.jpg" alt="Family" class="w-full aspect-square object-cover rounded-sm" />
+      <img src="/images/luna.jpg" alt="Luna" class="w-full aspect-square object-cover rounded-sm" />
+    </div>
+  </section>
+
+  <section class="py-16">
+    <p class="text-[#5eead4] text-xs tracking-widest uppercase mb-8" style="font-family: 'JetBrains Mono', monospace;">Currently</p>
+    <div class="grid grid-cols-2 gap-8 max-w-2xl">
+      <div>
+        <p class="text-[#e8e8e8] font-medium mb-1">Role</p>
+        <p class="text-[#666] text-sm">IT Support Manager - Artivion</p>
+      </div>
+      <div>
+        <p class="text-[#e8e8e8] font-medium mb-1">Location</p>
+        <p class="text-[#666] text-sm">Kennesaw, GA</p>
+      </div>
+      <div>
+        <p class="text-[#e8e8e8] font-medium mb-1">Interests</p>
+        <p class="text-[#666] text-sm">Wildlife photography, hiking, gaming, homelabbing</p>
+      </div>
+      <div>
+        <p class="text-[#e8e8e8] font-medium mb-1">Dog</p>
+        <p class="text-[#666] text-sm">Luna. She's the best.</p>
+      </div>
+    </div>
+  </section>
+
 </Layout>

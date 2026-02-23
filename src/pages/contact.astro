@@ -3,6 +3,87 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Contact">
-  <h1 class="text-4xl font-bold mb-6">Contact</h1>
-  <p class="text-[#999] text-lg">Coming soon.</p>
+
+  <section class="py-16 max-w-xl">
+
+    <p class="label mb-3">Contact</p>
+    <h1 class="text-5xl font-semibold text-[#e8e8e8] mb-4 leading-tight">Get in touch.</h1>
+    <p class="text-[#666] text-base mb-12">Whether it's a work enquiry, a photography question, or you just want to say hi - my inbox is open.</p>
+
+    <form id="contact-form" class="space-y-6">
+
+      <div>
+        <label class="label mb-2 block">Name</label>
+        <input
+          type="text"
+          name="name"
+          required
+          style="width:100%; background:#1a1a1a; border:1px solid #222; color:#e8e8e8; padding:0.75rem 1rem; border-radius:2px; font-family:'Inter',sans-serif; font-size:0.9rem;"
+          onfocus="this.style.borderColor='#5eead4'"
+          onblur="this.style.borderColor='#222'"
+        />
+      </div>
+
+      <div>
+        <label class="label mb-2 block">Email</label>
+        <input
+          type="email"
+          name="email"
+          required
+          style="width:100%; background:#1a1a1a; border:1px solid #222; color:#e8e8e8; padding:0.75rem 1rem; border-radius:2px; font-family:'Inter',sans-serif; font-size:0.9rem;"
+          onfocus="this.style.borderColor='#5eead4'"
+          onblur="this.style.borderColor='#222'"
+        />
+      </div>
+
+      <div>
+        <label class="label mb-2 block">Message</label>
+        <textarea
+          name="message"
+          required
+          rows="6"
+          style="width:100%; background:#1a1a1a; border:1px solid #222; color:#e8e8e8; padding:0.75rem 1rem; border-radius:2px; font-family:'Inter',sans-serif; font-size:0.9rem; resize:vertical;"
+          onfocus="this.style.borderColor='#5eead4'"
+          onblur="this.style.borderColor='#222'"
+        ></textarea>
+      </div>
+
+      <button
+        type="submit"
+        id="submit-btn"
+        style="background:transparent; border:1px solid #5eead4; color:#5eead4; padding:0.75rem 2rem; font-family:'JetBrains Mono',monospace; font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; border-radius:2px; transition:all 0.2s;"
+        onmouseenter="this.style.background='#5eead4'; this.style.color='#111111'"
+        onmouseleave="this.style.background='transparent'; this.style.color='#5eead4'"
+      >
+        Send message
+      </button>
+
+    </form>
+
+  </section>
+
 </Layout>
+
+<script>
+  const form = document.getElementById('contact-form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    btn.textContent = 'Sending...';
+    btn.style.opacity = '0.6';
+
+    const data = new FormData(form);
+    const response = await fetch('https://formspree.io/f/xbdapjyq', {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (response.ok) {
+      window.location.href = '/thanks';
+    } else {
+      btn.textContent = 'Something went wrong - try again';
+      btn.style.opacity = '1';
+    }
+  });
+</script>

@@ -1,1 +1,62 @@
 @import "tailwindcss";
+
+/* Base */
+body {
+  color: #e8e8e8;
+  background-color: #111111;
+}
+
+/* Typography */
+.mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Reusable link styles */
+.nav-link {
+  color: #666;
+  text-decoration: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.nav-link:hover {
+  color: #5eead4;
+}
+
+.nav-title {
+  color: #e8e8e8;
+  text-decoration: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.nav-title:hover {
+  color: #5eead4;
+}
+
+/* Section labels */
+.label {
+  color: #5eead4;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Teal accent links */
+.accent-link {
+  color: #5eead4;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.accent-link:hover {
+  color: #e8e8e8;
+}

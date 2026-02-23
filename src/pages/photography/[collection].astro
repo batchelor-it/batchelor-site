@@ -1,0 +1,110 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const { collection } = Astro.params;
+
+export async function getStaticPaths() {
+  return [
+    { params: { collection: 'wildlife' } },
+    { params: { collection: 'luna' } },
+    { params: { collection: 'macro' } },
+    { params: { collection: 'plantlife' } },
+    { params: { collection: 'landscape' } },
+    { params: { collection: 'astro' } },
+    { params: { collection: 'street' } },
+    { params: { collection: 'travel' } },
+  ];
+}
+
+const title = collection!.charAt(0).toUpperCase() + collection!.slice(1);
+
+const images = import.meta.glob('/public/photography/**/*.{jpg,jpeg,png,webp}');
+const collectionImages = Object.keys(images)
+  .filter((path) => path.includes(`/photography/${collection}/`))
+  .map((path) => path.replace('/public', ''));
+---
+
+<Layout title={title}>
+
+  <section class="py-20">
+    <div class="mb-4">
+      <a href="/photography" class="text-xs text-[#666] hover:text-[#5eead4] transition-colors" style="font-family: 'JetBrains Mono', monospace;">← Photography</a>
+    </div>
+    <p class="text-[#5eead4] text-xs tracking-widest uppercase mb-4" style="font-family: 'JetBrains Mono', monospace;">{title}</p>
+    <h1 class="text-5xl font-semibold text-[#e8e8e8] mb-16 leading-tight">{title}.</h1>
+
+    {collectionImages.length === 0 ? (
+      <p class="text-[#666]">No photos yet.</p>
+    ) : (
+      <div style="column-count: 3; column-gap: 12px;">
+        {collectionImages.map((src, i) => (
+          <div style="break-inside: avoid; margin-bottom: 12px; cursor: pointer;" data-index={i}
+            onmouseenter="this.querySelector('img').style.outline='2px solid #5eead4'"
+            onmouseleave="this.querySelector('img').style.outline='none'"
+      >
+        <img
+          src={src}
+          alt=""
+          style="width:100%; border-radius:2px; transition: opacity 0.3s;"
+          data-index={i}
+        />
+      </div>
+        ))}
+      </div>
+    )}
+  </section>
+
+</Layout>
+
+<!-- Lightbox -->
+<div id="lightbox" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:50; align-items:center; justify-content:center; padding:1rem;">
+  <button id="lb-close" class="absolute top-6 right-8 text-[#666] hover:text-[#e8e8e8] text-2xl transition-colors" style="font-family: 'JetBrains Mono', monospace;">✕</button>
+  <button id="lb-prev" class="absolute left-6 text-[#666] hover:text-[#e8e8e8] text-2xl transition-colors" style="font-family: 'JetBrains Mono', monospace;">←</button>
+  <img id="lightbox-img" src="" alt="" class="max-h-[90vh] max-w-[90vw] object-contain rounded-sm" />
+  <button id="lb-next" class="absolute right-6 text-[#666] hover:text-[#e8e8e8] text-2xl transition-colors" style="font-family: 'JetBrains Mono', monospace;">→</button>
+</div>
+
+<script define:vars={{ collectionImages }}>
+  let current = 0;
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+
+  function openLightbox(index) {
+    current = index;
+    lightboxImg.src = collectionImages[index];
+lightbox.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  function changeImage(dir) {
+    current = (current + dir + collectionImages.length) % collectionImages.length;
+    lightboxImg.src = collectionImages[current];
+  }
+
+  // Click on images
+  document.querySelectorAll('[data-index]').forEach((el) => {
+    el.addEventListener('click', () => {
+      openLightbox(parseInt(el.dataset.index));
+    });
+  });
+
+  // Lightbox controls
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  document.getElementById('lb-prev').addEventListener('click', () => changeImage(-1));
+  document.getElementById('lb-next').addEventListener('click', () => changeImage(1));
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  // Keyboard nav
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') changeImage(1);
+    if (e.key === 'ArrowLeft') changeImage(-1);
+  });
+</script>
