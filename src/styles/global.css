@@ -60,3 +60,33 @@ body {
 .accent-link:hover {
   color: #e8e8e8;
 }
+
+/* Post content styles */
+.prose h2 {
+  color: #e8e8e8;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose h3 {
+  color: #e8e8e8;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose p {
+  margin-bottom: 1.25rem;
+}
+
+.prose a {
+  color: #5eead4;
+  text-decoration: none;
+}
+
+.prose a:hover {
+  color: #e8e8e8;
+}
