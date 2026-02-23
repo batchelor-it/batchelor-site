@@ -9,6 +9,7 @@ const { title } = Astro.props;
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title} — Jimmy Batchelor</title>
@@ -35,5 +36,14 @@ const { title } = Astro.props;
       <slot />
     </main>
 
+  <footer class="border-t border-[#1f1f1f] mt-16">
+      <div class="max-w-4xl mx-auto px-8 py-6 flex items-center justify-between">
+        <p class="text-[#444] text-xs" style="font-family: 'JetBrains Mono', monospace;">© 2026 Jimmy Batchelor</p>
+        <div class="flex gap-6">
+          <a href="https://www.linkedin.com/in/jimmyb" class="nav-link">LinkedIn</a>
+          <a href="/contact" class="nav-link">Contact</a>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>

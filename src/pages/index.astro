@@ -5,44 +5,78 @@ import { getCollection } from 'astro:content';
 const posts = (await getCollection('thoughts'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3);
+
+const allImages = import.meta.glob('/public/photography/**/*.{jpg,jpeg,png,webp}');
+const images = Object.keys(allImages)
+  .map((path) => path.replace('/public', ''))
+  .slice(0, 6);
+
+function preview(body: string, length = 120) {
+  return body
+    .replace(/#{1,6}\s+/g, '')
+    .replace(/\*\*?|__?/g, '')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/`[^`]+`/g, '')
+    .replace(/\n+/g, ' ')
+    .trim()
+    .slice(0, length)
+    .trimEnd() + '...';
+}
 ---
 
 <Layout title="Home">
 
   <!-- Hero -->
   <section class="py-20 border-b border-[#1f1f1f]">
-    <p class="text-[#5eead4] text-xs tracking-widest uppercase mb-4" style="font-family: 'JetBrains Mono', monospace;">IT Leader · Kennesaw, GA</p>
+    <p class="label mb-4">IT Leader · Kennesaw, GA</p>
     <h1 class="text-5xl font-semibold text-[#e8e8e8] mb-6 leading-tight">
       Hey, I'm Jimmy.
     </h1>
-    <p class="text-[#888] text-xl max-w-xl leading-relaxed">
+    <p class="text-[#888] text-xl leading-relaxed">
       I spend my days making tech a little less terrible for the people who use it. Outside of work you'll find me tinkering with tech, gaming, on a trail with my dog Luna, or crouched in a field pointing a camera at something that already flew away.
     </p>
   </section>
 
-  <!-- Featured Photography -->
+  <!-- Latest Thoughts -->
   <section class="py-16 border-b border-[#1f1f1f]">
     <div class="flex items-center justify-between mb-8">
-      <p class="text-xs tracking-widest uppercase text-[#5eead4]" style="font-family: 'JetBrains Mono', monospace;">Photography</p>
-      <a href="/photography" class="text-xs text-[#666] hover:text-[#e8e8e8] transition-colors" style="font-family: 'JetBrains Mono', monospace;">View all →</a>
-    </div>
-    <p class="text-[#666]">Photos coming soon.</p>
-  </section>
-
-  <!-- Latest Thoughts -->
-  <section class="py-16">
-    <div class="flex items-center justify-between mb-8">
-      <p class="text-xs tracking-widest uppercase text-[#5eead4]" style="font-family: 'JetBrains Mono', monospace;">Latest Thoughts</p>
-      <a href="/thoughts" class="text-xs text-[#666] hover:text-[#e8e8e8] transition-colors" style="font-family: 'JetBrains Mono', monospace;">View all →</a>
+      <p class="label">Latest Thoughts</p>
+      <a href="/thoughts" class="nav-link">View all →</a>
     </div>
     <div class="space-y-0">
       {posts.map((post) => (
-        <a href={`/thoughts/${post.slug}`} class="flex items-start justify-between py-5 border-b border-[#1f1f1f] group">
-          <h2 class="text-[#888] font-medium group-hover:text-[#5eead4] transition-colors">{post.data.title}</h2>
+		<a href={`/thoughts/${post.slug}`} class="flex items-start justify-between py-5 border-b border-[#1f1f1f] group">
+          <div>
+            <h2 class="text-[#888] font-medium group-hover:text-[#5eead4] transition-colors mb-1">{post.data.title}</h2>
+            <p class="text-[#555] text-sm">{preview(post.body)}</p>
+          </div>
           <p class="text-[#444] text-xs ml-8 mt-1 shrink-0" style="font-family: 'JetBrains Mono', monospace;">
             {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
           </p>
         </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Featured Photography -->
+  <section class="py-16">
+    <div class="flex items-center justify-between mb-8">
+      <p class="label">Photography</p>
+      <a href="/photography" class="nav-link">View all →</a>
+    </div>
+    <div style="column-count: 3; column-gap: 12px;">
+      {images.map((src) => (
+        <div style="break-inside: avoid; margin-bottom: 12px;">
+          <a href="/photography">
+            <img
+              src={src}
+              alt=""
+              style="width:100%; border-radius:2px; transition: opacity 0.3s;"
+              onmouseenter="this.style.opacity='0.8'"
+              onmouseleave="this.style.opacity='1'"
+            />
+          </a>
+        </div>
       ))}
     </div>
   </section>

@@ -10,24 +10,35 @@ const posts = (await getCollection('thoughts')).sort(
 <Layout title="Thoughts">
 
   <section class="py-20">
-    <p class="text-[#5eead4] text-xs tracking-widest uppercase mb-4" style="font-family: 'JetBrains Mono', monospace;">Thoughts</p>
+    <p class="label mb-4">Thoughts</p>
     <h1 class="text-5xl font-semibold text-[#e8e8e8] mb-4 leading-tight">Things I've written.</h1>
     <p class="text-[#666] text-lg mb-16">IT, projects, photography, and whatever else is on my mind.</p>
 
-    <div class="space-y-0">
-      {posts.map((post) => (
-        <a href={`/thoughts/${post.slug}`} class="flex items-start justify-between py-6 border-b border-[#1f1f1f] group">
-          <div>
-            <h2 class="text-[#e8e8e8] font-medium group-hover:text-[#5eead4] transition-colors mb-1">{post.data.title}</h2>
-            {post.data.description && (
-              <p class="text-[#666] text-sm">{post.data.description}</p>
-            )}
-          </div>
-          <p class="text-[#444] text-xs ml-8 mt-1 shrink-0" style="font-family: 'JetBrains Mono', monospace;">
-            {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
-          </p>
-        </a>
-      ))}
+    <div class="space-y-16">
+      {posts.map(async (post) => {
+        const { Content } = await post.render();
+        return (
+          <article class="border-b border-[#1f1f1f] pb-16">
+            <div class="mb-6">
+              <p class="text-[#444] text-xs mb-2" style="font-family: 'JetBrains Mono', monospace;">
+                {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+              </p>
+              <a href={`/thoughts/${post.slug}`}>
+                <h2 class="text-2xl font-semibold text-[#e8e8e8] hover:text-[#5eead4] transition-colors mb-2">{post.data.title}</h2>
+              </a>
+              {post.data.description && (
+                <p class="text-[#666]">{post.data.description}</p>
+              )}
+            </div>
+            <div class="text-[#888] leading-relaxed space-y-4">
+              <Content />
+            </div>
+            <div class="mt-8">
+              <a href={`/thoughts/${post.slug}`} class="nav-link">Read more →</a>
+            </div>
+          </article>
+        );
+      })}
     </div>
   </section>
 
