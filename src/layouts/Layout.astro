@@ -1,67 +1,101 @@
 ---
 import '../styles/global.css';
+
 interface Props {
   title: string;
   description?: string;
 }
+
 const { title, description = "IT leader, wildlife photographer, and occasional overthinker based in Kennesaw, GA." } = Astro.props;
 const canonical = `https://batchelor.it${Astro.url.pathname}`;
 ---
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title} — Jimmy Batchelor</title>
-    <meta name="description" content={description} />
-    <meta name="author" content="Jimmy Batchelor" />
-    <link rel="canonical" href={canonical} />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title} — Jimmy Batchelor</title>
+  <meta name="description" content={description} />
+  <meta name="author" content="Jimmy Batchelor" />
+  <link rel="canonical" href={canonical} />
+  <!-- Open Graph -->
+  <meta property="og:title" content={`${title} — Jimmy Batchelor`} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:site_name" content="Jimmy Batchelor" />
+  <meta property="og:type" content="website" />
+  <!-- Twitter/X -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content={`${title} — Jimmy Batchelor`} />
+  <meta name="twitter:description" content={description} />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body class="bg-[#111111] text-[#e8e8e8] min-h-screen" style="font-family: 'Inter', sans-serif;">
 
-    <!-- Open Graph -->
-    <meta property="og:title" content={`${title} — Jimmy Batchelor`} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
-    <meta property="og:site_name" content="Jimmy Batchelor" />
-    <meta property="og:type" content="website" />
+  <nav class="border-b border-[#1f1f1f]">
+    <div class="max-w-4xl mx-auto px-8 py-5 flex items-center justify-between">
+      <a href="/" class="nav-title">Jimmy Batchelor</a>
 
-    <!-- Twitter/X -->
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content={`${title} — Jimmy Batchelor`} />
-    <meta name="twitter:description" content={description} />
+      <!-- Desktop nav -->
+      <ul class="hidden md:flex gap-8">
+        <li><a href="/photography" class="nav-link">Photography</a></li>
+        <li><a href="/thoughts" class="nav-link">Thoughts</a></li>
+        <li><a href="/about" class="nav-link">About</a></li>
+        <li><a href="/resume" class="nav-link">Resume</a></li>
+        <li><a href="/contact" class="nav-link">Contact</a></li>
+      </ul>
 
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  </head>
-  <body class="bg-[#111111] text-[#e8e8e8] min-h-screen" style="font-family: 'Inter', sans-serif;">
+      <!-- Hamburger button -->
+      <button
+        id="menu-toggle"
+        class="md:hidden flex flex-col gap-1.5 p-2"
+        aria-label="Toggle menu"
+        onmouseenter="this.querySelectorAll('span').forEach(s => s.style.backgroundColor = '#5eead4')"
+        onmouseleave="this.querySelectorAll('span').forEach(s => s.style.backgroundColor = '#888')"
+      >
+        <span class="block w-6 h-px bg-[#888]"></span>
+        <span class="block w-6 h-px bg-[#888]"></span>
+        <span class="block w-6 h-px bg-[#888]"></span>
+      </button>
+    </div>
 
-    <nav class="border-b border-[#1f1f1f]">
-      <div class="max-w-4xl mx-auto px-8 py-5 flex items-center justify-between">
-        <a href="/" class="nav-title">Jimmy Batchelor</a>
-    <ul class="flex gap-8">
-      <li><a href="/photography" class="nav-link">Photography</a></li>
-      <li><a href="/thoughts" class="nav-link">Thoughts</a></li>
-      <li><a href="/about" class="nav-link">About</a></li>
-      <li><a href="/resume" class="nav-link">Resume</a></li>
-      <li><a href="/contact" class="nav-link">Contact</a></li>
-    </ul>
-      </div>
-    </nav>
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-[#1f1f1f]">
+      <ul class="max-w-4xl mx-auto px-8 py-4 flex flex-col gap-4">
+        <li><a href="/photography" class="nav-link">Photography</a></li>
+        <li><a href="/thoughts" class="nav-link">Thoughts</a></li>
+        <li><a href="/about" class="nav-link">About</a></li>
+        <li><a href="/resume" class="nav-link">Resume</a></li>
+        <li><a href="/contact" class="nav-link">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
 
-    <main class="max-w-4xl mx-auto px-8 py-16">
-      <slot />
-    </main>
+  <script>
+    const toggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+    toggle?.addEventListener('click', () => {
+      menu?.classList.toggle('hidden');
+    });
+  </script>
+
+  <main class="max-w-4xl mx-auto px-8 py-16">
+    <slot />
+  </main>
 
   <footer class="border-t border-[#1f1f1f] mt-16">
-      <div class="max-w-4xl mx-auto px-8 py-6 flex items-center justify-between">
-        <p class="text-[#444] text-xs" style="font-family: 'JetBrains Mono', monospace;">© 2026 Jimmy Batchelor</p>
-        <div class="flex gap-6">
-          <a href="https://www.linkedin.com/in/jimmyb" class="nav-link">LinkedIn</a>
-          <a href="/contact" class="nav-link">Contact</a>
-        </div>
+    <div class="max-w-4xl mx-auto px-8 py-6 flex items-center justify-between">
+      <p class="text-[#444] text-xs" style="font-family: 'JetBrains Mono', monospace;">© 2026 Jimmy Batchelor</p>
+      <div class="flex gap-6">
+        <a href="https://www.linkedin.com/in/jimmyb" class="nav-link">LinkedIn</a>
+        <a href="/contact" class="nav-link">Contact</a>
       </div>
-    </footer>
-  </body>
+    </div>
+  </footer>
+
+</body>
 </html>
