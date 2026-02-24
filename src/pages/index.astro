@@ -58,14 +58,14 @@ function preview(body: string, length = 120) {
   </section>
 
   <!-- Latest Thoughts -->
-  <section class="py-10 border-b border-[#1f1f1f]">
+  <section class="py-10">
     <div class="flex items-center justify-between mb-4">
       <p class="label">Latest Thoughts</p>
       <a href="/thoughts" class="nav-link">View all →</a>
     </div>
 
     {allTags.length > 0 && (
-      <div class="flex flex-wrap gap-2 mb-8">
+      <div class="flex flex-wrap gap-2 mb-4">
         {allTags.map((tag: string) => (
           <a href={'/thoughts/tag/' + tag} class="mono text-xs px-2 py-0.5 rounded border border-[#1f1f1f] text-[#666] hover:border-[#5eead4] hover:text-[#5eead4] transition-colors">
             {tag}
@@ -90,7 +90,7 @@ function preview(body: string, length = 120) {
   </section>
 
   <!-- Featured Photography -->
-  <section class="py-10">
+  <section class="py-1">
     <div class="flex items-center justify-between mb-4">
       <p class="label">Photography</p>
       <a href="/photography" class="nav-link">View all →</a>
