@@ -7,7 +7,14 @@ const posts = (await getCollection('thoughts'))
   .slice(0, 3);
 
 const allPosts = await getCollection('thoughts');
-const allTags = [...new Set(allPosts.flatMap(post => post.data.tags ?? []))].sort();
+const tagCounts = allPosts.flatMap(post => post.data.tags ?? []).reduce((acc: Record<string, number>, tag: string) => {
+  acc[tag] = (acc[tag] ?? 0) + 1;
+  return acc;
+}, {});
+const allTags = Object.entries(tagCounts)
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 10)
+  .map(([tag]) => tag);
 
 const collections = [
   { name: 'Wildlife', slug: 'wildlife' },
@@ -90,7 +97,7 @@ function preview(body: string, length = 120) {
     </div>
 
     <div class="flex flex-wrap gap-2 mb-8">
-      {collections.map((col) => (
+      {collections.slice(0, 10).map((col) => (
         <a href={'/photography/' + col.slug} class="mono text-xs px-2 py-0.5 rounded border border-[#1f1f1f] text-[#666] hover:border-[#5eead4] hover:text-[#5eead4] transition-colors">
           {col.name}
         </a>
