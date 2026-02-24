@@ -10,8 +10,8 @@ const allPosts = await getCollection('thoughts');
 const tagCounts = allPosts.flatMap(post => post.data.tags ?? []).reduce((acc: Record<string, number>, tag: string) => {
   acc[tag] = (acc[tag] ?? 0) + 1;
   return acc;
-}, {});
-const allTags = Object.entries(tagCounts)
+}, {} as Record<string, number>);
+const allTags = (Object.entries(tagCounts) as [string, number][])
   .sort((a, b) => b[1] - a[1])
   .slice(0, 10)
   .map(([tag]) => tag);
