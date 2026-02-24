@@ -1,0 +1,80 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('thoughts');
+  const tags = [...new Set(posts.flatMap(post => post.data.tags ?? []))];
+  return tags.map(tag => {
+    const tagPosts = posts
+      .filter(p => p.data.tags?.includes(tag))
+      .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+    const tagLinks = tagPosts.map(post => ({
+      ...post,
+      tagLinks: (post.data.tags ?? []).map((t: string) => ({
+        label: t,
+        url: '/thoughts/tag/' + t
+      }))
+    }));
+    return {
+      params: { tag },
+      props: { tag, posts: tagLinks }
+    };
+  });
+}
+
+const { tag, posts } = Astro.props;
+---
+
+<Layout title={'#' + tag + ' - Thoughts'}>
+  <section class="py-12">
+    <p class="label mb-4">tag</p>
+    <h1 class="text-5xl font-semibold text-[#e8e8e8] mb-4 leading-tight">{'#' + tag}</h1>
+    <p class="text-[#666] text-lg mb-8">{posts.length + ' post' + (posts.length !== 1 ? 's' : '')}</p>
+
+    <a href="/thoughts" class="accent-link text-sm mono mb-16 inline-block">&larr; all thoughts</a>
+
+    <div class="space-y-16">
+      {posts.map(async (post: any) => {
+        const { Content } = await post.render();
+        return (
+          <article class="border-b border-[#1f1f1f] pb-16">
+            <div class="mb-6">
+              <p class="text-[#444] text-xs mb-2" style="font-family: 'JetBrains Mono', monospace;">
+                {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+              </p>
+              <a href={'/thoughts/' + post.slug}>
+                <h2 class="text-2xl font-semibold text-[#e8e8e8] hover:text-[#5eead4] transition-colors mb-2">
+                  {post.data.title}
+                </h2>
+              </a>
+              {post.data.description && (
+                <p class="text-[#666]">{post.data.description}</p>
+              )}
+              {post.tagLinks.length > 0 && (
+                <div class="flex flex-wrap gap-2 mt-3">
+                  {post.tagLinks.map((t: { label: string; url: string }) => (
+                    <a
+                      href={t.url}
+                      class={'mono text-xs px-2 py-0.5 rounded border transition-colors ' + (t.label === tag ? 'border-[#5eead4] text-[#5eead4]' : 'border-[#1f1f1f] text-[#666] hover:border-[#5eead4] hover:text-[#5eead4]')}
+                    >
+                      {t.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div class="text-[#888] leading-relaxed space-y-4">
+              <Content />
+            </div>
+
+            <div class="mt-8">
+              <a href={'/thoughts/' + post.slug} class="nav-link">Read more &rarr;</a>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </section>
+</Layout>

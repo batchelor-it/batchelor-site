@@ -12,6 +12,11 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await post.render();
+
+const tagLinks = (post.data.tags ?? []).map((t: string) => ({
+  label: t,
+  url: '/thoughts/tag/' + t
+}));
 ---
 
 <Layout title={post.data.title}>
@@ -24,11 +29,19 @@ const { Content } = await post.render();
       {post.data.description && (
         <p class="text-[#666] text-lg">{post.data.description}</p>
       )}
+      {tagLinks.length > 0 && (
+        <div class="flex flex-wrap gap-2 mt-4">
+          {tagLinks.map((t: { label: string; url: string }) => (
+            <a href={t.url} class="mono text-xs px-2 py-0.5 rounded border border-[#1f1f1f] text-[#666] hover:border-[#5eead4] hover:text-[#5eead4] transition-colors">
+              {t.label}
+            </a>
+          ))}
+        </div>
+      )}
     </div>
 
     <div class="prose prose-invert prose-lg max-w-none text-[#888] leading-relaxed space-y-6">
-      <div class="prose text-[#888] leading-relaxed space-y-4"></div>
-        <Content />
+      <Content />
     </div>
 
     <div class="mt-16 pt-8 border-t border-[#1f1f1f]">
