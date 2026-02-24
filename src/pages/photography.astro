@@ -17,17 +17,17 @@ const images = Object.keys(allImages).map((path) => path.replace('/public', ''))
 ---
 
 <Layout title="Photography">
-
   <section class="py-12">
     <p class="text-[#5eead4] text-xs tracking-widest uppercase mb-4" style="font-family: 'JetBrains Mono', monospace;">Photography</p>
     <h1 class="text-5xl font-semibold text-[#e8e8e8] mb-4 leading-tight">Photos.</h1>
-    <p class="text-[#666] text-lg mb-12">A mix of wildlife, nature, and whatever else catches my eye.</p>
+    <p class="text-[#666] text-lg mb-8">A mix of wildlife, nature, and whatever else catches my eye.</p>
 
-    <div class="flex flex-wrap gap-6 mb-16 border-b border-[#1f1f1f] pb-12">
+    <div class="flex flex-wrap gap-2 mb-16">
       {collections.map((col) => (
-        <a href={'/photography/' + col.slug}
-          class="text-xs tracking-widest uppercase text-[#666] hover:text-[#5eead4] transition-colors"
-          style="font-family: 'JetBrains Mono', monospace;">
+        <a
+          href={'/photography/' + col.slug}
+          class="mono text-xs px-2 py-0.5 rounded border border-[#1f1f1f] text-[#666] hover:border-[#5eead4] hover:text-[#5eead4] transition-colors"
+        >
           {col.name}
         </a>
       ))}
@@ -46,7 +46,6 @@ const images = Object.keys(allImages).map((path) => path.replace('/public', ''))
       ))}
     </div>
   </section>
-
 </Layout>
 
 <div id="lightbox" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:50; align-items:center; justify-content:center; padding:1rem;">
@@ -87,6 +86,7 @@ const images = Object.keys(allImages).map((path) => path.replace('/public', ''))
   document.getElementById('lb-close').addEventListener('click', closeLightbox);
   document.getElementById('lb-prev').addEventListener('click', () => changeImage(-1));
   document.getElementById('lb-next').addEventListener('click', () => changeImage(1));
+
   lightbox.addEventListener('click', (e) => {
     if (e.target === lightbox) closeLightbox();
   });
