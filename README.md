@@ -1,6 +1,6 @@
 # batchelor.it
 
-Personal site for Jimmy Batchelor — IT leader, wildlife photographer, and occasional overthinker based in Kennesaw, GA.
+Personal site for Jimmy Batchelor - IT leader, wildlife photographer, and occasional overthinker based in Kennesaw, GA.
 
 **Live site:** [batchelor.it](https://batchelor.it)
 
@@ -10,10 +10,10 @@ Built with [Astro](https://astro.build) and [Tailwind CSS](https://tailwindcss.c
 
 ## What's on the site
 
-- **Thoughts** — writing about IT, projects, and whatever's on my mind
-- **Photography** — wildlife, macro, landscape, and more
-- **Resume** — work history and certs
-- **About** — the non-resume version
+- **Thoughts** - writing about IT, projects, and whatever's on my mind
+- **Photography** - wildlife, macro, landscape, and more
+- **Resume** - work history and certs
+- **About** - the non-resume version
 
 ## Stack
 
